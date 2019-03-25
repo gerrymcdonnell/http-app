@@ -10,12 +10,18 @@ class App extends Component {
   };
 
   //shortcut 'comp did mount' cdm
-  /**returns a promise which returns the result of async operation */
+  /**returns a promise which returns the result of async operation
+   * the data propery contaisn the data from server
+   */
   async componentDidMount() {
+    
+    //const response=await axios.get('https://jsonplaceholder.typicode.com/posts');
+    
+    //object destructing: get the data property and rename it as posts
     const {data:posts}=await axios.get('https://jsonplaceholder.typicode.com/posts');
     
     //await the promise for the result,must use async keyword
-    console.log(posts);
+    //console.log(posts);
 
     this.setState({posts});
   }
