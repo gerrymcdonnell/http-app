@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Axios from 'axios';
+import axios from 'axios';
 
 /**npm i axios@0.18 */
 import "./App.css";
@@ -8,6 +8,17 @@ class App extends Component {
   state = {
     posts: []
   };
+
+  //shortcut 'comp did mount' cdm
+  /**returns a promise which returns the result of async operation */
+  async componentDidMount() {
+    const {data:posts}=await axios.get('https://jsonplaceholder.typicode.com/posts');
+    
+    //await the promise for the result,must use async keyword
+    console.log(posts);
+
+    this.setState({posts});
+  }
 
   handleAdd = () => {
     console.log("Add");
