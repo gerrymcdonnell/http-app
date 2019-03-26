@@ -4,6 +4,23 @@ import axios from 'axios';
 /**npm i axios@0.18 */
 import "./App.css";
 
+//vid 146 interceptors
+axios.interceptors.response.use(null,err=>{
+
+  //expected error
+  const expectedError=err.response && err.response.status>=400 &&err.response.status<500
+    
+  if(!expectedError){       
+    //logging the error somewhere
+    console.log('Unexpected error',err);
+    alert('unexpected error');
+  }
+
+  return Promise.reject(err);   
+
+
+})
+
 const apiEndpoint = 'https://jsonplaceholder.typicode.com/posts';
 
 class App extends Component {
@@ -90,13 +107,8 @@ class App extends Component {
     catch(ex){
       if(ex.response && ex.response.status===404)      
         alert('error');
-      else{
-        //logging the error somewhere
-        console.log('logging the error',ex)
-      }
-        
-      //revert change due to error
-      this.setState({posts:origPosts});
+        //revert change due to error
+        this.setState({posts:origPosts});
     }    
 
   };
