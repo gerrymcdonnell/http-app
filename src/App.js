@@ -81,13 +81,20 @@ class App extends Component {
     const posts=this.state.posts.filter(p=>p.id !== post.id);
     this.setState({posts});
 
+    //test an error
+    //throw new Error("");
+
     try{
       await axios.delete(apiEndpoint+'/'+post.id);
-      //test an error
-      throw new Error("");
     }
     catch(ex){
-      alert('error');
+      if(ex.response && ex.response.status===404)      
+        alert('error');
+      else{
+        //logging the error somewhere
+        console.log('logging the error',ex)
+      }
+        
       //revert change due to error
       this.setState({posts:origPosts});
     }    
