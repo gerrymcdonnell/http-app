@@ -73,11 +73,25 @@ class App extends Component {
 
   handleDelete = async post => {
     console.log("Delete", post);
-    await axios.delete(apiEndpoint+'/'+post.id);
+    
+    //copy of posts before the deletion
+    const origPosts=this.state.posts;
 
     //filter the posts by not including the one we deleted
     const posts=this.state.posts.filter(p=>p.id !== post.id);
     this.setState({posts});
+
+    try{
+      await axios.delete(apiEndpoint+'/'+post.id);
+      //test an error
+      throw new Error("");
+    }
+    catch(ex){
+      alert('error');
+      //revert change due to error
+      this.setState({posts:origPosts});
+    }    
+
   };
 
   render() {
