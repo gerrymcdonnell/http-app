@@ -1,27 +1,12 @@
-import React, { Component } from "react";
-import axios from 'axios';
-
-/**npm i axios@0.18 */
 import "./App.css";
 
-//vid 146 interceptors
-axios.interceptors.response.use(null,err=>{
+import React, { Component } from "react";
+import http from './services/httpService';
 
-  //expected error
-  const expectedError=err.response && err.response.status>=400 &&err.response.status<500
-    
-  if(!expectedError){       
-    //logging the error somewhere
-    console.log('Unexpected error',err);
-    alert('unexpected error');
-  }
+//import api endpoint address
+import config from './config.json';
 
-  return Promise.reject(err);   
-
-
-})
-
-const apiEndpoint = 'https://jsonplaceholder.typicode.com/posts';
+/**npm i axios@0.18 */
 
 class App extends Component {
   state = {
@@ -37,7 +22,7 @@ class App extends Component {
     //const response=await axios.get('https://jsonplaceholder.typicode.com/posts');
 
     //object destructing: get the data property and rename it as posts
-    const { data: posts } = await axios.get(apiEndpoint);
+    const { data: posts } = await http.get(config.apiEndpoint);
 
     //await the promise for the result,must use async keyword
     //console.log(posts);
@@ -47,7 +32,7 @@ class App extends Component {
 
 
   //handleAdd is prop set to a function so the async syntax is different
-  handleAdd = async() => {
+  handleAdd = async () => {
     console.log("Add");
 
     const obj = {
@@ -56,60 +41,60 @@ class App extends Component {
     };
 
     //returns a promise so should use await and alos the function should be async
-    const{data:post}=await axios.post(apiEndpoint, obj);
+    const { data: post } = await http.post(config.apiEndpoint, obj);
     console.log(post);
 
     // add post to array, create a new array and use spread operator.
     // the new post is added to the start
-    const posts=[post,...this.state.posts];
-    this.setState({posts});
+    const posts = [post, ...this.state.posts];
+    this.setState({ posts });
   };
 
   handleUpdate = async post => {
     console.log("Update", post);
-    post.title="updated";
-    
+    post.title = "updated";
+
     //PUT send whole post object
-    const {data}=await axios.put(apiEndpoint+'/'+post.id,post);
+    const { data } = await http.put(config.apiEndpoint + '/' + post.id, post);
     console.log(data);
 
     //create new posts array with the new post
-    const posts=[...this.state.posts];
-    
+    const posts = [...this.state.posts];
+
     //find the index of current post in array
-    const index=posts.indexOf(post);
-    
+    const index = posts.indexOf(post);
+
     //vid 142
     //confused:!!! go to the index create new object and spread post argument
-    posts[index]={...post};
-    this.setState({posts});
-    
+    posts[index] = { ...post };
+    this.setState({ posts });
+
     //PATCH send only fields to be updated
     //axios.patch(apiEndpoint+'/'+post.id,{title:post.title});
   };
 
   handleDelete = async post => {
     console.log("Delete", post);
-    
+
     //copy of posts before the deletion
-    const origPosts=this.state.posts;
+    const origPosts = this.state.posts;
 
     //filter the posts by not including the one we deleted
-    const posts=this.state.posts.filter(p=>p.id !== post.id);
-    this.setState({posts});
+    const posts = this.state.posts.filter(p => p.id !== post.id);
+    this.setState({ posts });
 
     //test an error
     //throw new Error("");
 
-    try{
-      await axios.delete(apiEndpoint+'/'+post.id);
+    try {
+      await http.delete(config.apiEndpoint + '/' + post.id);
     }
-    catch(ex){
-      if(ex.response && ex.response.status===404)      
+    catch (ex) {
+      if (ex.response && ex.response.status === 404)
         alert('error');
-        //revert change due to error
-        this.setState({posts:origPosts});
-    }    
+      //revert change due to error
+      this.setState({ posts: origPosts });
+    }
 
   };
 
