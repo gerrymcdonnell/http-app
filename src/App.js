@@ -4,6 +4,8 @@ import axios from 'axios';
 /**npm i axios@0.18 */
 import "./App.css";
 
+const apiEndpoint = 'https://jsonplaceholder.typicode.com/posts';
+
 class App extends Component {
   state = {
     posts: []
@@ -14,20 +16,30 @@ class App extends Component {
    * the data propery contaisn the data from server
    */
   async componentDidMount() {
-    
+
     //const response=await axios.get('https://jsonplaceholder.typicode.com/posts');
-    
+
     //object destructing: get the data property and rename it as posts
-    const {data:posts}=await axios.get('https://jsonplaceholder.typicode.com/posts');
-    
+    const { data: posts } = await axios.get(apiEndpoint);
+
     //await the promise for the result,must use async keyword
     //console.log(posts);
 
-    this.setState({posts});
+    this.setState({ posts });
   }
 
-  handleAdd = () => {
+
+  //handleAdd is prop set to a function so the async syntax is different
+  handleAdd = async() => {
     console.log("Add");
+
+    const obj = {
+      title: 'a',
+      body: 'b'
+    };
+
+    //returns a promise so should use await and alos the function should be async
+    const{data:post}=await axios.post(apiEndpoint, obj);
   };
 
   handleUpdate = post => {
