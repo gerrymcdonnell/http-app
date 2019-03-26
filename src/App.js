@@ -48,8 +48,27 @@ class App extends Component {
     this.setState({posts});
   };
 
-  handleUpdate = post => {
+  handleUpdate = async post => {
     console.log("Update", post);
+    post.title="updated";
+    
+    //PUT send whole post object
+    const {data}=await axios.put(apiEndpoint+'/'+post.id,post);
+    console.log(data);
+
+    //create new posts array with the new post
+    const posts=[...this.state.posts];
+    
+    //find the index of current post in array
+    const index=posts.indexOf(post);
+    
+    //vid 142
+    //confused:!!! go to the index create new object and spread post argument
+    posts[index]={...post};
+    this.setState({posts});
+    
+    //PATCH send only fields to be updated
+    //axios.patch(apiEndpoint+'/'+post.id,{title:post.title});
   };
 
   handleDelete = post => {
