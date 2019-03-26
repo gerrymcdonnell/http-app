@@ -40,6 +40,7 @@ class App extends Component {
 
     //returns a promise so should use await and alos the function should be async
     const{data:post}=await axios.post(apiEndpoint, obj);
+    console.log(post);
   };
 
   handleUpdate = post => {
