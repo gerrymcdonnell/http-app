@@ -41,6 +41,11 @@ class App extends Component {
     //returns a promise so should use await and alos the function should be async
     const{data:post}=await axios.post(apiEndpoint, obj);
     console.log(post);
+
+    // add post to array, create a new array and use spread operator.
+    // the new post is added to the start
+    const posts=[post,...this.state.posts];
+    this.setState({posts});
   };
 
   handleUpdate = post => {
