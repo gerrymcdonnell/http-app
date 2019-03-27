@@ -1,10 +1,13 @@
-import "./App.css";
-
 import React, { Component } from "react";
 import http from './services/httpService';
-
+//{} denotes component
+import {ToastContainer} from 'react-toastify';
 //import api endpoint address
 import config from './config.json';
+
+import "./App.css";
+//import toastift css
+import 'react-toastify/dist/ReactToastify.css';
 
 /**npm i axios@0.18 */
 
@@ -87,7 +90,7 @@ class App extends Component {
     //throw new Error("");
 
     try {
-      await http.delete(config.apiEndpoint + '/' + post.id);
+      await http.delete('err'+config.apiEndpoint + '/' + post.id);
     }
     catch (ex) {
       if (ex.response && ex.response.status === 404)
@@ -101,6 +104,7 @@ class App extends Component {
   render() {
     return (
       <React.Fragment>
+        <ToastContainer></ToastContainer>
         <button className="btn btn-primary" onClick={this.handleAdd}>
           Add
         </button>

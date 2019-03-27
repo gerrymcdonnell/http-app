@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+import {toast} from 'react-toastify';
+
 //vid 146 interceptors
 axios.interceptors.response.use(null, err => {
     //expected error
@@ -8,10 +10,17 @@ axios.interceptors.response.use(null, err => {
     if (!expectedError) {
         //logging the error somewhere
         console.log('Unexpected error', err);
-        alert('unexpected error');
+        
+        //toast
+        toast.error('unexpected error');
+        
+        //information to user
+        //toast('unexpected error');
     }
     return Promise.reject(err);
 })
+
+
 
 //4 methods like axios
 export default {
