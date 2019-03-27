@@ -5,6 +5,8 @@ import {ToastContainer} from 'react-toastify';
 //import api endpoint address
 import config from './config.json';
 
+
+
 import "./App.css";
 //import toastift css
 import 'react-toastify/dist/ReactToastify.css';
@@ -15,6 +17,16 @@ class App extends Component {
   state = {
     posts: []
   };
+
+  componentDidCatch(error, errorInfo) {
+    this.setState({ error });
+    Sentry.withScope(scope => {
+      Object.keys(errorInfo).forEach(key => {
+        scope.setExtra(key, errorInfo[key]);
+      });
+      Sentry.captureException(error);
+    });
+  }
 
   //shortcut 'comp did mount' cdm
   /**returns a promise which returns the result of async operation

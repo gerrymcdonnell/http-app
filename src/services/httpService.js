@@ -2,6 +2,9 @@ import axios from 'axios';
 
 import {toast} from 'react-toastify';
 
+//sentry vid 150
+import * as Sentry from '@sentry/browser';
+
 //vid 146 interceptors
 axios.interceptors.response.use(null, err => {
     //expected error
@@ -13,6 +16,8 @@ axios.interceptors.response.use(null, err => {
         
         //toast
         toast.error('unexpected error');
+
+        Sentry.showReportDialog();
         
         //information to user
         //toast('unexpected error');
